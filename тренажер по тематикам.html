@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Операции/тематики обращений WB Travel</title>
+<style>
+  :root {
+    --wb-purple: #7B3FE4;
+    --wb-purple-dark: #5B2BC4;
+    --wb-purple-light: #A87BFF;
+    --wb-bg: #F5F3FF;
+    --wb-text: #1A1A2E;
+    --wb-gray: #6B7280;
+    --wb-border: #E5E7EB;
+    --wb-success: #10B981;
+    --wb-error: #EF4444;
+    --wb-warning: #F59E0B;
+    --wb-new: #DB2777;
+    --wb-new-bg: #FCE7F3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--wb-bg);
+    color: var(--wb-text);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #7B3FE4 0%, #6B2FE0 40%, #5B2BC4 100%);
+    color: #fff;
+    padding: 48px 32px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -60%; right: 15%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(168,123,255,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+  .header h1 {
+    font-size: 42px; font-weight: 700; letter-spacing: -1px; margin-bottom: 4px;
+  }
+  .header h1 span { display: block; }
+  .header .subtitle {
+    font-size: 18px; font-weight: 400; opacity: 0.9; margin-top: 12px;
+  }
+
+  .nav-tabs {
+    max-width: 1200px;
+    margin: -28px auto 0;
+    padding: 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+  .nav-tabs-inner {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(123, 63, 228, 0.12);
+    display: flex;
+    padding: 8px;
+    gap: 4px;
+  }
+  .nav-tab {
+    flex: 1;
+    padding: 14px 20px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--wb-gray);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .nav-tab:hover { background: var(--wb-bg); color: var(--wb-purple); }
+  .nav-tab.active {
+    background: linear-gradient(135deg, #7B3FE4, #6B2FE0);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(123, 63, 228, 0.3);
+  }
+
+  .content { max-width: 1200px; margin: 0 auto; padding: 32px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeIn 0.3s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .news-banner {
+    background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+    border-left: 4px solid var(--wb-warning);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+  }
+  .news-banner .news-icon { font-size: 28px; flex-shrink: 0; line-height: 1; }
+  .news-banner .news-content { flex: 1; }
+  .news-banner .news-title {
+    font-size: 16px; font-weight: 700; color: #92400E; margin-bottom: 6px;
+  }
+  .news-banner .news-text { font-size: 14px; color: #78350F; line-height: 1.5; }
+  .news-banner .news-date {
+    display: inline-block; margin-top: 8px; padding: 4px 12px;
+    background: #fff; border-radius: 8px; font-size: 13px;
+    font-weight: 700; color: var(--wb-warning); border: 1px solid #FED7AA;
+  }
+
+  .search-bar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .search-input {
+    flex: 1; min-width: 240px; padding: 14px 18px;
+    border: 2px solid var(--wb-border); border-radius: 12px;
+    font-size: 15px; font-family: inherit;
+    transition: border-color 0.2s; background: #fff;
+  }
+  .search-input:focus { outline: none; border-color: var(--wb-purple); }
+  .search-hint {
+    font-size: 12px; color: var(--wb-gray); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .search-hint kbd {
+    background: var(--wb-bg); padding: 2px 8px; border-radius: 4px;
+    font-family: monospace; font-size: 11px; color: var(--wb-purple);
+    border: 1px solid #DDD6FE;
+  }
+
+  .class-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .filter-chip {
+    padding: 8px 16px; border: 2px solid var(--wb-border);
+    background: #fff; border-radius: 20px;
+    font-size: 13px; font-weight: 600; color: var(--wb-gray);
+    cursor: pointer; transition: all 0.2s; font-family: inherit;
+  }
+  .filter-chip:hover { border-color: var(--wb-purple-light); color: var(--wb-purple); }
+  .filter-chip.active {
+    background: var(--wb-purple); border-color: var(--wb-purple); color: #fff;
+  }
+  .filter-chip .count {
+    display: inline-block; margin-left: 6px;
+    font-size: 11px; opacity: 0.7; font-weight: 700;
+  }
+
+  .table-wrap {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04); overflow: hidden;
+  }
+  .theme-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .theme-table thead {
+    background: linear-gradient(135deg, #7B3FE4, #6B2FE0);
+    color: #fff; position: sticky; top: 0; z-index: 10;
+  }
+  .theme-table th {
+    padding: 16px 20px; text-align: left;
+    font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .theme-table td {
+    padding: 16px 20px; border-bottom: 1px solid var(--wb-border);
+    vertical-align: top;
+  }
+  .theme-table tbody tr:last-child td { border-bottom: none; }
+  .theme-table tbody tr:hover { background: var(--wb-bg); }
+  .theme-table .col-num { width: 60px; }
+  .theme-table .col-class { width: 180px; }
+  .theme-table .col-was { width: 240px; }
+  .theme-table .col-now { width: 280px; }
+
+  .cell-num { font-size: 12px; color: var(--wb-gray); font-weight: 700; }
+  .cell-class {
+    display: inline-block; padding: 4px 10px;
+    background: var(--wb-bg); color: var(--wb-purple);
+    border-radius: 6px; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
+  }
+  .cell-was {
+    font-size: 13px; color: var(--wb-gray);
+    text-decoration: line-through; opacity: 0.75;
+  }
+  .cell-was.empty {
+    text-decoration: none; opacity: 0.4; font-style: italic;
+  }
+  .cell-now { font-size: 14px; font-weight: 700; color: var(--wb-text); }
+  .cell-now.empty {
+    color: var(--wb-gray); font-weight: 400;
+    font-style: italic; opacity: 0.6;
+  }
+  .cell-desc { font-size: 13px; color: #4B5563; line-height: 1.5; }
+
+  mark {
+    background: #FEF3C7; color: #92400E;
+    padding: 0 2px; border-radius: 3px; font-weight: 600;
+  }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--wb-gray); }
+  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+  .results-count {
+    font-size: 13px; color: var(--wb-gray); margin-bottom: 12px; padding-left: 4px;
+  }
+  .results-count strong { color: var(--wb-purple); }
+
+  .info-banner {
+    background: linear-gradient(135deg, #FCE7F3 0%, #FBCFE8 100%);
+    border-left: 4px solid var(--wb-new);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(219, 39, 119, 0.1);
+  }
+  .info-banner .info-title {
+    font-size: 16px; font-weight: 700; color: #9D174D; margin-bottom: 6px;
+  }
+  .info-banner .info-text {
+    font-size: 14px; color: #831843; line-height: 1.5;
+  }
+
+  .trainer-header {
+    background: #fff; border-radius: 14px; padding: 24px;
+    margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .progress-bar-wrap {
+    height: 8px; background: var(--wb-bg);
+    border-radius: 4px; overflow: hidden; margin-top: 12px;
+  }
+  .progress-bar {
+    height: 100%; background: linear-gradient(90deg, #7B3FE4, #A87BFF);
+    transition: width 0.4s; border-radius: 4px;
+  }
+  .trainer-stats { display: flex; gap: 24px; margin-top: 16px; flex-wrap: wrap; }
+  .stat-item { font-size: 14px; color: var(--wb-gray); }
+  .stat-item strong { color: var(--wb-text); font-size: 18px; }
+
+  .case-card {
+    background: #fff; border-radius: 14px; padding: 28px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .case-scenario {
+    background: var(--wb-bg); border-radius: 12px;
+    padding: 20px; margin-bottom: 20px;
+    border-left: 4px solid var(--wb-purple);
+  }
+  .case-scenario .label {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    color: var(--wb-purple); letter-spacing: 0.5px; margin-bottom: 8px;
+  }
+  .case-scenario .text { font-size: 15px; }
+  .case-scenario .comment {
+    margin-top: 12px; padding-top: 12px; border-top: 1px dashed #D1D5DB;
+    font-size: 13px; color: var(--wb-gray); font-style: italic;
+  }
+
+  .case-question { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    padding: 14px 18px; border: 2px solid var(--wb-border);
+    background: #fff; border-radius: 12px; text-align: left;
+    font-size: 14px; font-family: inherit; cursor: pointer;
+    transition: all 0.15s; color: var(--wb-text); line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--wb-purple-light); background: var(--wb-bg); }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { border-color: var(--wb-success); background: #ECFDF5; }
+  .option-btn.wrong { border-color: var(--wb-error); background: #FEF2F2; }
+  .option-btn.reveal-correct { border-color: var(--wb-success); background: #ECFDF5; }
+  .option-btn .opt-class {
+    display: inline-block; padding: 2px 8px;
+    background: var(--wb-bg); color: var(--wb-purple);
+    border-radius: 5px; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.4px;
+    margin-right: 8px; vertical-align: middle;
+  }
+  .option-btn.correct .opt-class,
+  .option-btn.reveal-correct .opt-class { background: #D1FAE5; color: #065F46; }
+  .option-btn.wrong .opt-class { background: #FEE2E2; color: #991B1B; }
+
+  .feedback {
+    margin-top: 20px; padding: 16px 20px;
+    border-radius: 12px; font-size: 14px; display: none;
+  }
+  .feedback.show { display: block; animation: fadeIn 0.3s; }
+  .feedback.success { background: #ECFDF5; border-left: 4px solid var(--wb-success); }
+  .feedback.error { background: #FEF2F2; border-left: 4px solid var(--wb-error); }
+  .feedback .title { font-weight: 700; margin-bottom: 6px; }
+
+  .btn-primary {
+    margin-top: 20px; padding: 14px 28px;
+    background: linear-gradient(135deg, #7B3FE4, #6B2FE0);
+    color: #fff; border: none; border-radius: 12px;
+    font-size: 15px; font-weight: 600; font-family: inherit;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(123,63,228,0.35); }
+  .btn-secondary {
+    margin-top: 20px; margin-left: 10px;
+    padding: 14px 28px; background: #fff;
+    color: var(--wb-purple); border: 2px solid var(--wb-purple);
+    border-radius: 12px; font-size: 15px; font-weight: 600;
+    font-family: inherit; cursor: pointer;
+  }
+
+  .footer { text-align: center; padding: 32px; color: var(--wb-gray); font-size: 13px; }
+
+  @media (max-width: 900px) {
+    .theme-table .col-num { display: none; }
+    .theme-table th:nth-child(1),
+    .theme-table td:nth-child(1) { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    .header h1 { font-size: 28px; }
+    .header { padding: 32px 20px 44px; }
+    .content { padding: 20px; }
+    .nav-tabs { padding: 0 20px; }
+    .nav-tab { font-size: 11px; padding: 12px 6px; }
+    .trainer-stats { gap: 16px; }
+    .theme-table th, .theme-table td { padding: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1><span>Операции/тематики</span><span>обращений WB Travel</span></h1>
+    <div class="subtitle">Департамент клиентского опыта и сервиса</div>
+  </div>
+</div>
+
+<div class="nav-tabs">
+  <div class="nav-tabs-inner">
+    <button class="nav-tab active" data-tab="reference">📚 Было → Стало</button>
+    <button class="nav-tab" data-tab="new">🆕 Новое дерево тематик</button>
+    <button class="nav-tab" data-tab="trainer">🎯 Тренажёр</button>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- БЫЛО → СТАЛО -->
+  <div class="tab-panel active" id="reference">
+    <div class="news-banner">
+      <div class="news-icon">📢</div>
+      <div class="news-content">
+        <div class="news-title">Запуск новых тематик обращений</div>
+        <div class="news-text">
+          С этой даты все обращения в WB Travel регистрируются по новой структуре тематик.
+          Старые тематики больше не используются. Ознакомьтесь со справочником и пройдите тренажёр.
+        </div>
+        <div class="news-date" id="launchDate">Дата запуска: —</div>
+      </div>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" class="search-input" id="searchInput" placeholder="Умный поиск: было, стало, описание, класс...">
+    </div>
+    <div class="search-hint">
+      💡 Подсказка: можно искать по нескольким словам — например, <kbd>возврат авиа</kbd> или <kbd>овербукинг тур</kbd>.
+    </div>
+
+    <div class="class-filters" id="classFilters"></div>
+    <div class="results-count" id="resultsCount"></div>
+
+    <div class="table-wrap">
+      <table class="theme-table">
+        <thead>
+          <tr>
+            <th class="col-num">№</th>
+            <th class="col-class">Класс</th>
+            <th class="col-was">Было</th>
+            <th class="col-now">Стало</th>
+            <th>Описание / Когда отмечать</th>
+          </tr>
+        </thead>
+        <tbody id="themesBody"></tbody>
+      </table>
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <div class="icon">🔍</div>
+        <div>Ничего не найдено. Попробуйте изменить запрос или сбросить фильтры.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- НОВОЕ ДЕРЕВО ТЕМАТИК -->
+  <div class="tab-panel" id="new">
+    <div class="info-banner">
+      <div class="info-title">🆕 Новое дерево тематик</div>
+      <div class="info-text">
+        Полный список всех тематик, по которым сотрудник может зарегистрировать обращение.
+        Это рабочий справочник оператора: открывайте эту вкладку, когда выбираете тему для клиента.
+      </div>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" class="search-input" id="newSearchInput" placeholder="Поиск по тематикам и описаниям...">
+    </div>
+
+    <div class="class-filters" id="newClassFilters"></div>
+    <div class="results-count" id="newResultsCount"></div>
+
+    <div class="table-wrap">
+      <table class="theme-table">
+        <thead>
+          <tr>
+            <th class="col-num">№</th>
+            <th class="col-class">Класс</th>
+            <th class="col-now">Тематика</th>
+            <th>Описание / Когда отмечать</th>
+          </tr>
+        </thead>
+        <tbody id="newThemesBody"></tbody>
+      </table>
+      <div class="empty-state" id="newEmptyState" style="display:none;">
+        <div class="icon">🔍</div>
+        <div>Ничего не найдено.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ТРЕНАЖЁР -->
+  <div class="tab-panel" id="trainer">
+    <div class="trainer-header">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div>
+          <div style="font-size:13px; color:var(--wb-gray); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Прогресс обучения</div>
+          <div style="font-size:24px; font-weight:700; margin-top:4px;" id="progressText">0 / 0</div>
+        </div>
+        <button class="btn-secondary" style="margin:0;" onclick="resetTrainer()">Новая попытка</button>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progressBar" style="width:0%"></div>
+      </div>
+      <div class="trainer-stats">
+        <div class="stat-item">Правильно: <strong id="statCorrect">0</strong></div>
+        <div class="stat-item">Ошибок: <strong id="statWrong">0</strong></div>
+        <div class="stat-item">Точность: <strong id="statAccuracy">—</strong></div>
+      </div>
+    </div>
+    <div id="caseContainer"></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  WB Travel · Внутренний инструмент обучения · Департамент клиентского опыта и сервиса
+</div>
+
+<script>
+/* ============================================================
+   ⚙️ НАСТРОЙКИ
+   ============================================================ */
+const LAUNCH_DATE = "2026-10-01";
+const QUESTIONS_PER_SESSION = 20;
+
+const CLASS_ORDER = [
+  "Акции/Скидки",
+  "АВИА",
+  "ОТЕЛИ",
+  "ТУРЫ",
+  "Транспорт",
+  "Впечатления (покупатели)",
+  "Впечатления (поставщики)",
+  "Другое"
+];
+
+/* ============================================================
+   ТЕМАТИКИ
+   ============================================================ */
+const RAW_THEMES = [
+  // ===== Акции/Скидки =====
+  { class: "Акции/Скидки", was: "", now: "Кэшбэк Ягодки: консультация", desc: "Клиент спрашивает о правилах акции, сроках начисления, на что можно потратить. Нет жалобы на отсутствие баллов." },
+  { class: "Акции/Скидки", was: "", now: "Кэшбэк Ягодки: не начислен", desc: "Клиент сообщает, что баллы не пришли, пришли не в том объеме или списались." },
+  { class: "Акции/Скидки", was: "", now: "Консультация", desc: "Консультация по акциям в компании, уточнение по имеющимся скидкам, программам лояльности (кроме кэшбэка ягодки)." },
+  { class: "Акции/Скидки", was: "", now: "Проблема/претензия", desc: "Возникли сложности с акцией/начислением скидки (кроме кэшбэка ягодки)." },
+
+  // ===== АВИА =====
+  { class: "АВИА", was: "Страховка", now: "Страховка: покупка / возврат / компенсация", desc: "Клиент хочет купить страховку, вернуть её или получить компенсацию по страховому случаю." },
+  { class: "АВИА", was: "Кредит / рассрочка", now: "Кредит/Рассрочка: консультация", desc: "Консультация по покупке в кредит/рассрочку, общие вопросы: какой банк выдал кредит, график платежей и т.д. Речь идет о рассрочке для сотрудников." },
+  { class: "АВИА", was: "Кредит / рассрочка", now: "Кредит/Рассрочка: претензия", desc: "Проблемы с оформлением/отменой кредита, технические ошибки и т.д. Речь идет о рассрочке для сотрудников. В случае проблем с отображением графика платежей, рекомендуем обращаться в HR." },
+  { class: "АВИА", was: "Ошибка при заполнении персданных", now: "Изменение персональных данных", desc: "Клиент ошибся в ФИО, дате рождения, номере паспорта, поле «Мужской/Женский». Оператор запрашивает скан паспорта. Или клиент просит поменять человека в билете." },
+  { class: "АВИА", was: "Доп. услуги", now: "Доп. услуга: багаж", desc: "Вопрос про покупку багажа, норму провоза, возврат оплаты за багаж." },
+  { class: "АВИА", was: "Доп. услуги", now: "Доп. услуга: питание", desc: "Покупка питания на борту." },
+  { class: "АВИА", was: "Доп. услуги", now: "Доп. услуга: место", desc: "Выбор места в салоне." },
+  { class: "АВИА", was: "Условия возврата ДС", now: "Возврат денег: условия возврата, уточнение сроков", desc: "Клиент оформил возврат и спрашивает: «Когда придут деньги?». Срок возврата не истек." },
+  { class: "АВИА", was: "Возврат ДС: срок возврата истёк", now: "Возврат денег: срок истёк", desc: "Клиент говорит: «Прошло 10 дней (или обещанный срок), денег нет». Это эскалация." },
+  { class: "АВИА", was: "Обмен билета", now: "Обмен билета", desc: "Клиент хочет поменять дату, рейс, направление. Явный запрос на обмен." },
+  { class: "АВИА", was: "Возврат авиабилета", now: "Возврат билета", desc: "Клиент хочет сдать билет и вернуть деньги. Явный запрос на возврат." },
+  { class: "АВИА", was: "Покупка авиабилета", now: "Покупка билета", desc: "Клиент спрашивает: «Как купить билет?», «Какие документы нужны?», «Как оплатить?». До покупки." },
+  { class: "АВИА", was: "Вопросы по заказу", now: "Вопросы по заказу: регистрация/посадочный талон", desc: "Клиент не может зарегистрироваться онлайн, не знает, как это сделать. Или просто уточняет, как пройти регистрацию. Клиент спрашивает, где получить или скачать посадочный талон." },
+  { class: "АВИА", was: "Вопросы по заказу", now: "Вопросы по заказу: информация о рейсе", desc: "Клиент уточняет актуальное время вылета, терминал, статус рейса." },
+  { class: "АВИА", was: "Вопросы по заказу", now: "Вопросы по заказу: прочее", desc: "Любые вопросы, которые не описаны в конкретных тематиках." },
+  { class: "АВИА", was: "Чек: запрос и ошибки", now: "Документы: чек, маршрутная квитанция, справка", desc: "Клиент не может найти чек об оплате или возврате в ЛК или на почте. Клиент не получил МК на почту, не видит в ЛК, просит прислать повторно. Или клиент запрашивает справку для работы о покупке билета и т.д." },
+  { class: "АВИА", was: "Ошибка на сайте / в приложении", now: "Техническая ошибка: оплата", desc: "Ошибка при оплате картой, WB Кошельком. Не списываются деньги или списываются дважды." },
+  { class: "АВИА", was: "Ошибка на сайте / в приложении", now: "Техническая ошибка: отображение / функционал", desc: "На сайте/в приложении не получается найти рейсы, выдает ошибку на этапе поиска. Любые ошибки, не связанные с оплатой, до покупки билета." },
+  { class: "АВИА", was: "", now: "Личный кабинет: заказ не отображается", desc: "Клиент купил билет, но не видит его в ЛК. Заказ есть в админке, но клиент его не видит." },
+  { class: "АВИА", was: "", now: "Претензия: запрос дополнительной компенсации", desc: "Клиент требует деньги за отмену рейса, задержку, испорченный отпуск. Это не возврат билета, это требование доп. выплат. Эскалация в отдел претензий." },
+
+  // ===== ОТЕЛИ =====
+  { class: "ОТЕЛИ", was: "Вопросы по бронированию", now: "Консультация до покупки", desc: "Клиент еще не бронировал, спрашивает общие вопросы: как забронировать, какие отели есть." },
+  { class: "ОТЕЛИ", was: "Вопросы по бронированию", now: "Что входит в стоимость", desc: "Клиент уточняет: завтрак включен, есть ли трансфер, парковка, кондиционер." },
+  { class: "ОТЕЛИ", was: "Вопросы по заказу", now: "Вопросы по заказу: документы", desc: "Клиент не может скачать ваучер в ЛК или просит прислать на почту или в чат." },
+  { class: "ОТЕЛИ", was: "Вопросы по заказу", now: "Вопросы по заказу: категория номера, тип питания и т.д.", desc: "Клиент уточняет детали уже оформленной брони: категория номера, тип питания, контакты отеля." },
+  { class: "ОТЕЛИ", was: "Вопросы по заказу", now: "Изменение персональных данных", desc: "Клиент просит исправить ФИО, дату рождения, контакты в уже оформленной брони. Либо замена человека, добавление гостя." },
+  { class: "ОТЕЛИ", was: "Внести изменения в заказ", now: "Изменение дат", desc: "Клиент хочет перенести даты заезда/выезда." },
+  { class: "ОТЕЛИ", was: "Внести изменения в заказ", now: "Изменение класса / категории номера", desc: "Клиент хочет сменить категорию номера." },
+  { class: "ОТЕЛИ", was: "Отмена заказа", now: "Отмена/Возврат", desc: "Клиент хочет отменить бронирование отеля. Явный запрос на отмену." },
+  { class: "ОТЕЛИ", was: "Условия возврата ДС", now: "Возврат денег: условия возврата, уточнение сроков", desc: "Клиент отменил бронь и спрашивает «когда вернут деньги?». Срок не истек." },
+  { class: "ОТЕЛИ", was: "", now: "Возврат денег: срок истёк", desc: "Клиент говорит: «Прошло обещанное время, денег нет»." },
+  { class: "ОТЕЛИ", was: "Отель отказал в заселении", now: "Отказ в заселении", desc: "Клиент приехал в отель, а его не заселяют. Самый критичный инцидент." },
+  { class: "ОТЕЛИ", was: "Жалобы на отель", now: "Претензия к качеству номера/отеля (несоответствие)", desc: "Клиент жалуется на грязь в номере, несоответствие фото, поломки, плохой Wi-Fi, шум." },
+  { class: "ОТЕЛИ", was: "", now: "Претензия: запрос дополнительной компенсации", desc: "Клиент требует деньги за испорченный отпуск, отказ в заселении, несоответствие категории. Эскалация в отдел претензий." },
+  { class: "ОТЕЛИ", was: "", now: "Жалоба на сервис на отдыхе", desc: "Клиент жалуется на персонал и обслуживание в отеле." },
+  { class: "ОТЕЛИ", was: "Ошибка на сайте / в приложении", now: "Техническая ошибка: оплата", desc: "Ошибка при оплате бронирования отеля." },
+  { class: "ОТЕЛИ", was: "Ошибка на сайте / в приложении", now: "Техническая ошибка: отображение / функционал", desc: "Ошибка в поиске, при бронировании, любые ошибки до покупки, не связанные с оплатой." },
+  { class: "ОТЕЛИ", was: "", now: "Личный кабинет: заказ не отображается", desc: "Клиент забронировал отель, но не видит бронь в ЛК." },
+  { class: "ОТЕЛИ", was: "Сотрудничество", now: "Сотрудничество", desc: "Вопросы от владельцев отелей по подключению к площадке, условиям, комиссии." },
+  { class: "ОТЕЛИ", was: "", now: "Доп. услуги", desc: "Клиент уточняет про наличие паркинга, доп. люльки для ребенка, можно ли с животными, трансфер и т.д." },
+
+  // ===== ТУРЫ =====
+  { class: "ТУРЫ", was: "Вопрос по бронированию", now: "Консультация до покупки", desc: "Клиент еще не купил, спрашивает общие вопросы: как бронировать, какие туры есть." },
+  { class: "ТУРЫ", was: "Вопрос по бронированию", now: "Что входит в стоимость", desc: "Клиент уточняет: трансфер, страховка, питание, гид включены." },
+  { class: "ТУРЫ", was: "Вопрос по бронированию", now: "Претензия: запрос дополнительной компенсации", desc: "Клиент требует дополнительную компенсацию за задержку рейса, смену отеля, испорченный отдых. Эскалация в отдел претензий." },
+  { class: "ТУРЫ", was: "", now: "Претензия к качеству номера/отеля (несоответствие)", desc: "Клиент жалуется на грязь в номере, несоответствие фото, поломки, плохой Wi-Fi, шум." },
+  { class: "ТУРЫ", was: "Статус тура", now: "Статус тура", desc: "Клиент оплатил тур, но он висит в статусе «Ожидает подтверждения» больше 1 часа. Клиент просит подтверждение тура (не документы, а просто «подтвердите, что тур есть»)." },
+  { class: "ТУРЫ", was: "Изменение персональных данных", now: "Изменение персональных данных", desc: "Клиент хочет поменять человека в туре или исправить ошибку в ФИО, дате рождения. Клиент хочет добавить или убрать туриста, изменить ребенка на взрослого." },
+  { class: "ТУРЫ", was: "Изменение заказа", now: "Изменение дат", desc: "Клиент хочет перенести даты тура (раньше/позже)." },
+  { class: "ТУРЫ", was: "Изменение заказа", now: "Изменение отеля", desc: "Туроператор предлагает другой отель (из-за овербукинга или закрытия). Клиент соглашается или просит другой. Либо инициатива клиента по замене отеля." },
+  { class: "ТУРЫ", was: "Изменение заказа", now: "Изменение класса / категории номера", desc: "Клиент хочет улучшить номер или поменять тип питания." },
+  { class: "ТУРЫ", was: "", now: "Отказ в заселении", desc: "Клиент приехал в отель, а его не заселяют. Самый критичный инцидент." },
+  { class: "ТУРЫ", was: "", now: "Жалоба на сервис на отдыхе", desc: "Клиент жалуется на персонал и обслуживание в отеле, не приехал трансфер, проблемы по взаимодействию с гидом." },
+  { class: "ТУРЫ", was: "Возврат тура", now: "Отмена/Возврат", desc: "Клиент хочет отказаться от тура и вернуть деньги. Создается обращение на отмену (заявка/проблема)." },
+  { class: "ТУРЫ", was: "Кредит / рассрочка", now: "Кредит/Рассрочка: консультация", desc: "Консультация по покупке в кредит/рассрочку, общие вопросы: какой банк выдал кредит, график платежей и т.д." },
+  { class: "ТУРЫ", was: "Кредит / рассрочка", now: "Кредит/Рассрочка: претензия", desc: "Проблемы с оформлением/отменой кредита, технические ошибки и т.д." },
+  { class: "ТУРЫ", was: "Документы по туру", now: "Запрос документов/ Документы не пришли", desc: "Клиент не получил ваучер, маршрутную квитанцию, договор-оферту. Просит прислать документы, подтверждающие бронирование." },
+  { class: "ТУРЫ", was: "Подбор тура", now: "Подбор тура", desc: "Клиент просит помочь подобрать тур вручную (не хочет пользоваться поиском)." },
+  { class: "ТУРЫ", was: "Ошибка на сайте / в приложении", now: "Техническая ошибка: оплата", desc: "Ошибка при оплате тура, двойное списание оплаты." },
+  { class: "ТУРЫ", was: "Ошибка на сайте / в приложении", now: "Техническая ошибка: отображение / функционал", desc: "Не отображается тур, ошибка при бронировании, не выбирается отель, не меняется рейс. Некорректная информация при оформлении (цена, состав и т.д.). Любые ошибки, не связанные с оплатой." },
+  { class: "ТУРЫ", was: "", now: "Личный кабинет: заказ/статус не отображается", desc: "Клиент купил тур, но не видит его в ЛК. Клиент не видит статус тура в ЛК (не «ожидает», а вообще пусто)." },
+  { class: "ТУРЫ", was: "", now: "Возврат денег: условия возврата, уточнение сроков", desc: "Клиент отменил тур и спрашивает «когда вернут деньги?»." },
+  { class: "ТУРЫ", was: "", now: "Возврат денег: срок истёк", desc: "Клиент говорит: «Прошло обещанное время, денег нет», сроки истекли." },
+
+  // ===== Транспорт =====
+  { class: "Транспорт", was: "Покупка ЖД билета", now: "ЖД билет: покупка", desc: "Клиент спрашивает, как купить ЖД билет на сайте, какие документы нужны, какие места." },
+  { class: "Транспорт", was: "Возврат ЖД билета", now: "ЖД билет: возврат", desc: "Клиент хочет вернуть ЖД билет." },
+  { class: "Транспорт", was: "Ошибка при оформлении заказа", now: "Техническая ошибка: оплата", desc: "Ошибка при оплате ЖД билета." },
+  { class: "Транспорт", was: "Ошибка при оформлении заказа", now: "Техническая ошибка: отображение / функционал", desc: "Ошибка при поиске, не получается найти рейс. Любые ошибки до покупки билета, кроме проблем с оплатой." },
+  { class: "Транспорт", was: "", now: "Личный кабинет: заказ не отображается", desc: "Клиент купил билет, но не видит в ЛК/МП. На сайте есть возможность посмотреть, в приложении такой возможности нет. Если не видит и в веб-версии, передавать техническим специалистам." },
+  { class: "Транспорт", was: "", now: "Консультация по изменению персональных данных", desc: "Клиент уточняет, как поменять данные пассажира." },
+  { class: "Транспорт", was: "", now: "РЖД бонус: консультация", desc: "Клиент уточняет, будет ли начислен РЖД бонус при покупке билета в WB. Как это сделать на сайте РЖД." },
+  { class: "Транспорт", was: "Покупка билета на автобус", now: "Автобус: покупка билета", desc: "Клиент уточняет, как купить билет на автобус (пока не реализовано)." },
+
+  // ===== Впечатления (покупатели) =====
+  { class: "Впечатления (покупатели)", was: "Вопрос по заказу", now: "Не пришел код / билет", desc: "Клиент купил впечатление, но не получил доступ, код, билет." },
+  { class: "Впечатления (покупатели)", was: "Вопрос по заказу", now: "Перенос даты / времени", desc: "Клиент хочет перенести время экскурсии или мастер-класса." },
+  { class: "Впечатления (покупатели)", was: "Вопрос по услуге", now: "Консультация до покупки", desc: "Клиент спрашивает о самой услуге: что взять с собой, сколько длится, есть ли возрастные ограничения." },
+  { class: "Впечатления (покупатели)", was: "Как связаться с продавцом", now: "Контакты продавца", desc: "Клиент не может найти телефон или контакты исполнителя." },
+  { class: "Впечатления (покупатели)", was: "Жалоба на услугу", now: "Услуга не состоялась", desc: "Клиент пришел, а продавца нет, или мероприятие отменили в последний момент." },
+  { class: "Впечатления (покупатели)", was: "Жалоба на услугу", now: "Претензия к качеству", desc: "Клиент получил услугу, но она не соответствовала описанию." },
+  { class: "Впечатления (покупатели)", was: "Отмена заказа", now: "Отмена заказа", desc: "Клиент хочет отменить заказ впечатлений." },
+  { class: "Впечатления (покупатели)", was: "Ошибка при оформлении заказа", now: "Техническая ошибка: оплата", desc: "Ошибка при оплате впечатления." },
+  { class: "Впечатления (покупатели)", was: "Ошибка при оформлении заказа", now: "Техническая ошибка: отображение / функционал", desc: "Не отображается услуга, ошибка при бронировании." },
+
+  // ===== Впечатления (поставщики) =====
+  { class: "Впечатления (поставщики)", was: "Активация \"Впечатления\"", now: "Активация продавца", desc: "Поставщик подключается к сервису, не может активировать профиль. Или спрашивает, как активировать." },
+  { class: "Впечатления (поставщики)", was: "Вопрос по добавлению услуги", now: "Добавление услуги", desc: "Поставщик не знает, как добавить новую услугу, загрузить фото, описание." },
+  { class: "Впечатления (поставщики)", was: "Календарь услуг", now: "Календарь / слоты", desc: "Поставщик не может настроить доступное время, слоты отображаются неверно." },
+  { class: "Впечатления (поставщики)", was: "Личный кабинет: вопрос", now: "ЛК поставщика: вопрос", desc: "Поставщик не находит раздел, не понимает, как вывести деньги, как изменить данные." },
+  { class: "Впечатления (поставщики)", was: "Личный кабинет: ошибка", now: "ЛК поставщика: ошибка", desc: "Поставщик видит ошибку в ЛК (Internal error, не сохраняется, не грузится)." },
+  { class: "Впечатления (поставщики)", was: "Модерация", now: "Модерация", desc: "Услуга не проходит модерацию, запрос на повторную модерацию, вопрос по причине отказа, условия модерации." },
+  { class: "Впечатления (поставщики)", was: "Коммуникация с покупателем", now: "Коммуникация с клиентом", desc: "Поставщик хочет/не может связаться с клиентом, не видит сообщения в чате." },
+  { class: "Впечатления (поставщики)", was: "Условия сотрудничества", now: "Условия сотрудничества", desc: "Вопросы по комиссии, договору, выплатам." },
+
+  // ===== Другое =====
+  { class: "Другое", was: "Вопрос по заказу WB", now: "Вопрос по товарам WB", desc: "Клиент спрашивает про доставку товара, возврат вещей, WB Кошелек. Перенаправляем в общий КЦ." },
+  { class: "Другое", was: "Жалоба на пуши", now: "Жалоба на пуши", desc: "Клиент жалуется на уведомления от WB." },
+  { class: "Другое", was: "Жалоба на сервис", now: "Обратная связь: жалоба на сотрудника", desc: "Клиент хочет зафиксировать жалобу на конкретного оператора." },
+  { class: "Другое", was: "Пожелание к продукту", now: "Обратная связь: идея по улучшению", desc: "Клиент предлагает улучшить сайт/приложение/сервис. Не касается тех вопросов, которые нужно решать в рамках действующих процедур. Без обратной связи для клиента." },
+  { class: "Другое", was: "", now: "Обратная связь: благодарность сотруднику", desc: "Клиент хочет зафиксировать благодарность на конкретного оператора." },
+  { class: "Другое", was: "Пустое сообщение / спам", now: "Спам / пустое сообщение", desc: "Клиент прислал набор букв, смайлы, тестовое сообщение. Ответ не требуется." },
+  { class: "Другое", was: "Трудоустройство", now: "Трудоустройство", desc: "Клиент спрашивает о вакансиях в WB." },
+  { class: "Другое", was: "Звонок сорвался", now: "Звонок сорвался/Клиент перестал отвечать", desc: "Разговор прервался." },
+  { class: "Другое", was: "", now: "Общий вопрос WB", desc: "Клиент спрашивает что-то про WB, но не про товары и не про Тревел (например, про офисы, про партнерство)." },
+  { class: "Другое", was: "", now: "Техническая ошибка: сайт / приложение не грузится", desc: "Клиент не может зайти на сайт или в приложение WB." },
+];
+
+/* Сортировка: класс → алфавит */
+const THEMES = [...RAW_THEMES].sort((a, b) => {
+  const ai = CLASS_ORDER.indexOf(a.class);
+  const bi = CLASS_ORDER.indexOf(b.class);
+  if (ai !== bi) return ai - bi;
+  return a.now.localeCompare(b.now, 'ru');
+});
+
+/* ============================================================
+   ДАТА ЗАПУСКА
+   ============================================================ */
+(function renderLaunchDate() {
+  const el = document.getElementById('launchDate');
+  const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const d = new Date(LAUNCH_DATE + 'T00:00:00');
+  if (isNaN(d.getTime())) { el.textContent = 'Дата запуска: уточняется'; return; }
+  el.textContent = `Дата запуска: ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+})();
+
+/* ============================================================
+   УТИЛИТЫ
+   ============================================================ */
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function highlight(text, terms) {
+  const safe = escapeHtml(text || '');
+  if (!terms.length) return safe;
+  const sorted = [...terms].sort((a,b) => b.length - a.length);
+  let result = safe;
+  sorted.forEach(term => {
+    if (!term) return;
+    const re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    result = result.replace(re, '<mark>$1</mark>');
+  });
+  return result;
+}
+
+/* ============================================================
+   СПРАВОЧНИК «БЫЛО → СТАЛО»
+   ============================================================ */
+const searchInput = document.getElementById('searchInput');
+const classFilters = document.getElementById('classFilters');
+const themesBody = document.getElementById('themesBody');
+const emptyState = document.getElementById('emptyState');
+const resultsCount = document.getElementById('resultsCount');
+
+const ALL_CLASSES = CLASS_ORDER.filter(c => THEMES.some(t => t.class === c));
+let activeClass = 'all';
+
+function renderFilters() {
+  classFilters.innerHTML = '';
+  const allChip = document.createElement('button');
+  allChip.className = 'filter-chip' + (activeClass === 'all' ? ' active' : '');
+  allChip.innerHTML = `Все классы <span class="count">${THEMES.length}</span>`;
+  allChip.onclick = () => { activeClass = 'all'; renderFilters(); renderTable(); };
+  classFilters.appendChild(allChip);
+  ALL_CLASSES.forEach(cls => {
+    const count = THEMES.filter(t => t.class === cls).length;
+    const chip = document.createElement('button');
+    chip.className = 'filter-chip' + (activeClass === cls ? ' active' : '');
+    chip.innerHTML = `${cls} <span class="count">${count}</span>`;
+    chip.onclick = () => { activeClass = cls; renderFilters(); renderTable(); };
+    classFilters.appendChild(chip);
+  });
+}
+
+function renderTable() {
+  const raw = searchInput.value.trim().toLowerCase();
+  const terms = raw.split(/\s+/).filter(Boolean);
+  const filtered = THEMES.filter(t => {
+    if (activeClass !== 'all' && t.class !== activeClass) return false;
+    if (!terms.length) return true;
+    const haystack = ((t.now || '') + ' ' + t.desc + ' ' + (t.was || '') + ' ' + t.class).toLowerCase();
+    return terms.every(term => haystack.includes(term));
+  });
+
+  resultsCount.innerHTML = `Найдено: <strong>${filtered.length}</strong> из ${THEMES.length}`;
+
+  if (filtered.length === 0) {
+    themesBody.innerHTML = '';
+    emptyState.style.display = 'block';
+    return;
+  }
+  emptyState.style.display = 'none';
+
+  themesBody.innerHTML = filtered.map(t => {
+    const idx = THEMES.indexOf(t) + 1;
+    const wasHtml = t.was
+      ? `<span class="cell-was">${highlight(t.was, terms)}</span>`
+      : `<span class="cell-was empty">не было</span>`;
+    return `
+      <tr>
+        <td><span class="cell-num">${idx}</span></td>
+        <td><span class="cell-class">${escapeHtml(t.class)}</span></td>
+        <td>${wasHtml}</td>
+        <td><span class="cell-now">${highlight(t.now, terms)}</span></td>
+        <td><span class="cell-desc">${highlight(t.desc, terms)}</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+searchInput.addEventListener('input', renderTable);
+renderFilters();
+renderTable();
+
+/* ============================================================
+   НОВОЕ ДЕРЕВО ТЕМАТИК (полный список всех тематик)
+   ============================================================ */
+const newSearchInput = document.getElementById('newSearchInput');
+const newClassFilters = document.getElementById('newClassFilters');
+const newThemesBody = document.getElementById('newThemesBody');
+const newEmptyState = document.getElementById('newEmptyState');
+const newResultsCount = document.getElementById('newResultsCount');
+
+let newActiveClass = 'all';
+
+function renderNewFilters() {
+  newClassFilters.innerHTML = '';
+  const allChip = document.createElement('button');
+  allChip.className = 'filter-chip' + (newActiveClass === 'all' ? ' active' : '');
+  allChip.innerHTML = `Все классы <span class="count">${THEMES.length}</span>`;
+  allChip.onclick = () => { newActiveClass = 'all'; renderNewFilters(); renderNewTable(); };
+  newClassFilters.appendChild(allChip);
+  ALL_CLASSES.forEach(cls => {
+    const count = THEMES.filter(t => t.class === cls).length;
+    const chip = document.createElement('button');
+    chip.className = 'filter-chip' + (newActiveClass === cls ? ' active' : '');
+    chip.innerHTML = `${cls} <span class="count">${count}</span>`;
+    chip.onclick = () => { newActiveClass = cls; renderNewFilters(); renderNewTable(); };
+    newClassFilters.appendChild(chip);
+  });
+}
+
+function renderNewTable() {
+  const raw = newSearchInput.value.trim().toLowerCase();
+  const terms = raw.split(/\s+/).filter(Boolean);
+  const filtered = THEMES.filter(t => {
+    if (newActiveClass !== 'all' && t.class !== newActiveClass) return false;
+    if (!terms.length) return true;
+    const haystack = ((t.now || '') + ' ' + t.desc + ' ' + t.class).toLowerCase();
+    return terms.every(term => haystack.includes(term));
+  });
+
+  newResultsCount.innerHTML = `Найдено: <strong>${filtered.length}</strong> из ${THEMES.length}`;
+
+  if (filtered.length === 0) {
+    newThemesBody.innerHTML = '';
+    newEmptyState.style.display = 'block';
+    return;
+  }
+  newEmptyState.style.display = 'none';
+
+  newThemesBody.innerHTML = filtered.map(t => {
+    const idx = THEMES.indexOf(t) + 1;
+    return `
+      <tr>
+        <td><span class="cell-num">${idx}</span></td>
+        <td><span class="cell-class">${escapeHtml(t.class)}</span></td>
+        <td><span class="cell-now">${highlight(t.now, terms)}</span></td>
+        <td><span class="cell-desc">${highlight(t.desc, terms)}</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+newSearchInput.addEventListener('input', renderNewTable);
+renderNewFilters();
+renderNewTable();
+
+/* ============================================================
+   ТРЕНАЖЁР
+   ============================================================ */
+let sessionCases = [];
+let currentCase = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let answered = false;
+
+const caseContainer = document.getElementById('caseContainer');
+const progressBar = document.getElementById('progressBar');
+const progressText = document.getElementById('progressText');
+const statCorrect = document.getElementById('statCorrect');
+const statWrong = document.getElementById('statWrong');
+const statAccuracy = document.getElementById('statAccuracy');
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const QUESTION_BANK = [
+  { scenario: "Клиент оформил возврат авиабилета 5 дней назад и пишет: «Когда уже придут деньги? Устал ждать».", comment: "Клиент уточняет статус возврата, срок ещё не истёк", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Возврат денег: срок истёк" }, { class: "АВИА", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "АВИА", now: "Возврат билета" }, { class: "АВИА", now: "Вопросы по заказу: информация о рейсе" } ],
+    correct: 1, explanation: "Срок возврата ещё не истёк — «Возврат денег: условия возврата, уточнение сроков»." },
+  { scenario: "Клиент купил тур в Турцию. За день до вылета пишет: «Нам до сих пор не подтверждают отель, мы уже на чемоданах!»", comment: "Клиент просит подтвердить бронирование тура", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Статус тура" }, { class: "ТУРЫ", now: "Отмена/Возврат" }, { class: "ТУРЫ", now: "Изменение отеля" }, { class: "ТУРЫ", now: "Претензия: запрос дополнительной компенсации" } ],
+    correct: 0, explanation: "Клиент просит подтвердить тур — «Статус тура»." },
+  { scenario: "Клиент приехал в отель, но на ресепшене ему говорят: «Вашей брони нет, отель переполнен».", comment: "Критический инцидент — клиента не заселяют", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Претензия к качеству номера/отеля (несоответствие)" }, { class: "ТУРЫ", now: "Отказ в заселении" }, { class: "ТУРЫ", now: "Жалоба на сервис на отдыхе" }, { class: "ТУРЫ", now: "Претензия: запрос дополнительной компенсации" } ],
+    correct: 1, explanation: "Клиента не заселяют — «Отказ в заселении»." },
+  { scenario: "Клиент спрашивает: «Будет ли начислен кэшбэк Ягодки за покупку авиабилета? И когда именно?»", comment: "Клиент уточняет правила начисления кэшбэка", item: "Авиабилеты",
+    options: [ { class: "Акции/Скидки", now: "Кэшбэк Ягодки: не начислен" }, { class: "Акции/Скидки", now: "Кэшбэк Ягодки: консультация" }, { class: "Акции/Скидки", now: "Консультация" }, { class: "Акции/Скидки", now: "Проблема/претензия" } ],
+    correct: 1, explanation: "Клиент спрашивает о правилах — «Кэшбэк Ягодки: консультация»." },
+  { scenario: "Клиент купил билет на поезд. Через 3 дня пишет: «Не вижу свой билет в личном кабинете. Где он?»", comment: "Клиент купил билет, но заказ не отображается в ЛК", item: "Транспорт",
+    options: [ { class: "Транспорт", now: "ЖД билет: покупка" }, { class: "Транспорт", now: "Техническая ошибка: отображение / функционал" }, { class: "Транспорт", now: "Личный кабинет: заказ не отображается" }, { class: "Транспорт", now: "РЖД бонус: консультация" } ],
+    correct: 2, explanation: "Клиент не видит заказ — «Личный кабинет: заказ не отображается»." },
+  { scenario: "Клиент звонит из отеля: «Номер грязный, кондиционер не работает, и вообще это не тот отель, что был на фото!»", comment: "Клиент жалуется на несоответствие отеля", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Жалоба на сервис на отдыхе" }, { class: "ТУРЫ", now: "Претензия к качеству номера/отеля (несоответствие)" }, { class: "ТУРЫ", now: "Отказ в заселении" }, { class: "ТУРЫ", now: "Претензия: запрос дополнительной компенсации" } ],
+    correct: 1, explanation: "Жалоба на качество услуги — «Претензия к качеству номера/отеля (несоответствие)»." },
+  { scenario: "Клиент написал: «Спасибо большое оператору Анне! Она быстро помогла с возвратом»", comment: "Клиент хочет зафиксировать благодарность оператору", item: "Другое",
+    options: [ { class: "Другое", now: "Обратная связь: идея по улучшению" }, { class: "Другое", now: "Спам / пустое сообщение" }, { class: "Другое", now: "Обратная связь: благодарность сотруднику" }, { class: "Другое", now: "Обратная связь: жалоба на сотрудника" } ],
+    correct: 2, explanation: "Благодарность оператору — «Обратная связь: благодарность сотруднику»." },
+  { scenario: "Клиент пишет: «Оплатил тур, но деньги списались дважды. Верните лишнее!» При проверке списание действительно задвоилось.", comment: "Двойное списание — техническая ошибка", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Техническая ошибка: оплата" }, { class: "ТУРЫ", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "ТУРЫ", now: "Личный кабинет: заказ/статус не отображается" }, { class: "ТУРЫ", now: "Претензия: запрос дополнительной компенсации" } ],
+    correct: 0, explanation: "Двойное списание — «Техническая ошибка: оплата»." },
+  { scenario: "Клиент купил авиабилет и звонит: «Я ошибся в фамилии — написал «Иванов» вместо «Ивановский». Можно ли исправить?»", comment: "Клиент просит исправить персональные данные", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Изменение персональных данных" }, { class: "ОТЕЛИ", now: "Изменение персональных данных" }, { class: "ТУРЫ", now: "Изменение персональных данных" }, { class: "АВИА", now: "Возврат билета" } ],
+    correct: 0, explanation: "Для авиабилета — «Изменение персональных данных» в классе АВИА." },
+  { scenario: "Клиент пишет: «Хочу отменить тур в Египет. Какой штраф придётся заплатить? Я пока думаю»", comment: "Клиент уточняет условия отмены, но ещё не решил", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Отмена/Возврат" }, { class: "ТУРЫ", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "ТУРЫ", now: "Что входит в стоимость" }, { class: "ТУРЫ", now: "Претензия: запрос дополнительной компенсации" } ],
+    correct: 1, explanation: "Клиент только уточняет условия — «Возврат денег: условия возврата, уточнение сроков»." },
+  { scenario: "Клиент прислал в чат набор букв «фывапролджэ» и смайлик. Вопроса нет.", comment: "Пустое сообщение или спам", item: "Другое",
+    options: [ { class: "Другое", now: "Спам / пустое сообщение" }, { class: "Другое", now: "Общий вопрос WB" }, { class: "Другое", now: "Вопрос по товарам WB" }, { class: "Другое", now: "Обратная связь: идея по улучшению" } ],
+    correct: 0, explanation: "«Спам / пустое сообщение»." },
+  { scenario: "Клиент пишет: «Не пришёл чек за авиабилет. Пришлите, пожалуйста, на почту»", comment: "Клиент запрашивает чек об оплате", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Документы: чек, маршрутная квитанция, справка" }, { class: "АВИА", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "АВИА", now: "Вопросы по заказу: информация о рейсе" }, { class: "АВИА", now: "Техническая ошибка: отображение / функционал" } ],
+    correct: 0, explanation: "Клиент запрашивает документ — «Документы: чек, маршрутная квитанция, справка»." },
+  { scenario: "Клиент пишет: «Вчера купил билет, но в личном кабинете его нет. Заказ в системе есть, а у меня пусто»", comment: "Заказ есть в админке, но не отображается у клиента", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Личный кабинет: заказ не отображается" }, { class: "АВИА", now: "Техническая ошибка: отображение / функционал" }, { class: "АВИА", now: "Вопросы по заказу: информация о рейсе" }, { class: "АВИА", now: "Техническая ошибка: оплата" } ],
+    correct: 0, explanation: "Заказ есть в админке, но не виден клиенту — «Личный кабинет: заказ не отображается»." },
+  { scenario: "Клиент пишет: «Оплатил вчера тур, деньги списались, но в личном кабинете заказа нет»", comment: "Оплата прошла, но заказ не отображается в ЛК", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Личный кабинет: заказ/статус не отображается" }, { class: "ТУРЫ", now: "Статус тура" }, { class: "ТУРЫ", now: "Техническая ошибка: оплата" }, { class: "ТУРЫ", now: "Возврат денег: условия возврата, уточнение сроков" } ],
+    correct: 0, explanation: "Заказ не отображается — «Личный кабинет: заказ/статус не отображается»." },
+  { scenario: "Клиент пишет: «Оплатил отель, но не получил подтверждение на почту»", comment: "Клиент не получил подтверждение брони", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Вопросы по заказу: документы" }, { class: "ОТЕЛИ", now: "Вопросы по заказу: категория номера, тип питания и т.д." }, { class: "ОТЕЛИ", now: "Техническая ошибка: отображение / функционал" }, { class: "ОТЕЛИ", now: "Личный кабинет: заказ не отображается" } ],
+    correct: 0, explanation: "Клиент не получил документ — «Вопросы по заказу: документы»." },
+  { scenario: "Клиент звонит: «Мы приехали в отель, а нас не заселяют — говорят, что брони нет. Мы с детьми!»", comment: "Клиента не заселяют — критический инцидент", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Отказ в заселении" }, { class: "ОТЕЛИ", now: "Претензия к качеству номера/отеля (несоответствие)" }, { class: "ОТЕЛИ", now: "Претензия: запрос дополнительной компенсации" }, { class: "ОТЕЛИ", now: "Вопросы по заказу: документы" } ],
+    correct: 0, explanation: "Не заселяют — «Отказ в заселении»." },
+  { scenario: "Клиент пишет: «Поменяйте, пожалуйста, фамилию в брони отеля — я вышла замуж»", comment: "Клиент просит изменить персональные данные", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Изменение персональных данных" }, { class: "ОТЕЛИ", now: "Изменение класса / категории номера" }, { class: "ОТЕЛИ", now: "Изменение дат" }, { class: "ТУРЫ", now: "Изменение персональных данных" } ],
+    correct: 0, explanation: "Для брони отеля — «Изменение персональных данных»." },
+  { scenario: "Клиент пишет: «Не могу зайти на сайт WB уже полчаса, выдаёт ошибку 502»", comment: "Сайт не грузится — сквозная техническая проблема", item: "Другое",
+    options: [ { class: "Другое", now: "Техническая ошибка: сайт / приложение не грузится" }, { class: "ТУРЫ", now: "Техническая ошибка: отображение / функционал" }, { class: "ТУРЫ", now: "Техническая ошибка: оплата" }, { class: "Другое", now: "Общий вопрос WB" } ],
+    correct: 0, explanation: "Сайт не грузится — «Техническая ошибка: сайт / приложение не грузится»." },
+  { scenario: "Клиент пишет: «Не пришло письмо с ваучером на отель. Куда обратиться?»", comment: "Клиент не получил ваучер", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Вопросы по заказу: документы" }, { class: "ОТЕЛИ", now: "Вопросы по заказу: категория номера, тип питания и т.д." }, { class: "ОТЕЛИ", now: "Техническая ошибка: отображение / функционал" }, { class: "ОТЕЛИ", now: "Личный кабинет: заказ не отображается" } ],
+    correct: 0, explanation: "Клиент не получил ваучер — «Вопросы по заказу: документы»." },
+  { scenario: "Клиент пишет: «Купил ЖД-билет, но не могу зарегистрироваться — не вижу номера билета в ЛК»", comment: "Клиент не видит заказ в личном кабинете", item: "Транспорт",
+    options: [ { class: "Транспорт", now: "Личный кабинет: заказ не отображается" }, { class: "Транспорт", now: "ЖД билет: покупка" }, { class: "Транспорт", now: "Консультация по изменению персональных данных" }, { class: "Транспорт", now: "Техническая ошибка: отображение / функционал" } ],
+    correct: 0, explanation: "Клиент не видит билет в ЛК — «Личный кабинет: заказ не отображается»." },
+  { scenario: "Клиент пишет: «Оплатил отель через WB Кошелек, но деньги не списались и отель не подтверждён»", comment: "Ошибка при оплате отеля", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Техническая ошибка: оплата" }, { class: "ОТЕЛИ", now: "Вопросы по заказу: документы" }, { class: "ОТЕЛИ", now: "Личный кабинет: заказ не отображается" }, { class: "ОТЕЛИ", now: "Возврат денег: условия возврата, уточнение сроков" } ],
+    correct: 0, explanation: "Ошибка при оплате — «Техническая ошибка: оплата»." },
+  { scenario: "Клиент спрашивает: «Как купить билет на автобус через WB Travel?»", comment: "Клиент уточняет, как купить автобусный билет", item: "Транспорт",
+    options: [ { class: "Транспорт", now: "Автобус: покупка билета" }, { class: "Транспорт", now: "ЖД билет: покупка" }, { class: "Транспорт", now: "РЖД бонус: консультация" }, { class: "Транспорт", now: "Консультация по изменению персональных данных" } ],
+    correct: 0, explanation: "Вопрос про покупку автобусного билета — «Автобус: покупка билета»." },
+  { scenario: "Клиент пишет: «Как поменять данные пассажира в билете на поезд?»", comment: "Клиент уточняет, как изменить персональные данные", item: "Транспорт",
+    options: [ { class: "Транспорт", now: "Консультация по изменению персональных данных" }, { class: "Транспорт", now: "ЖД билет: покупка" }, { class: "Транспорт", now: "ЖД билет: возврат" }, { class: "Транспорт", now: "РЖД бонус: консультация" } ],
+    correct: 0, explanation: "Вопрос про изменение данных — «Консультация по изменению персональных данных»." },
+  { scenario: "Клиент пишет: «Будет ли начислен РЖД бонус при покупке билета на поезд в WB Travel?»", comment: "Клиент уточняет правила начисления РЖД бонуса", item: "Транспорт",
+    options: [ { class: "Транспорт", now: "РЖД бонус: консультация" }, { class: "Транспорт", now: "ЖД билет: покупка" }, { class: "Акции/Скидки", now: "Консультация" }, { class: "Транспорт", now: "Консультация по изменению персональных данных" } ],
+    correct: 0, explanation: "Вопрос про РЖД бонус — «РЖД бонус: консультация»." },
+  { scenario: "Клиент пишет: «Купил экскурсию вчера, но код так и не пришёл»", comment: "Клиент не получил код на впечатление", item: "Впечатления",
+    options: [ { class: "Впечатления (покупатели)", now: "Не пришел код / билет" }, { class: "Впечатления (покупатели)", now: "Консультация до покупки" }, { class: "Впечатления (покупатели)", now: "Отмена заказа" }, { class: "Впечатления (покупатели)", now: "Услуга не состоялась" } ],
+    correct: 0, explanation: "Код не пришёл — «Не пришел код / билет»." },
+  { scenario: "Клиент пишет: «Хочу перенести мастер-класс на другую дату»", comment: "Клиент хочет перенести время посещения", item: "Впечатления",
+    options: [ { class: "Впечатления (покупатели)", now: "Перенос даты / времени" }, { class: "Впечатления (покупатели)", now: "Отмена заказа" }, { class: "Впечатления (покупатели)", now: "Не пришел код / билет" }, { class: "Впечатления (покупатели)", now: "Консультация до покупки" } ],
+    correct: 0, explanation: "Перенос времени — «Перенос даты / времени»." },
+  { scenario: "Клиент пишет: «Пришёл на экскурсию, а продавца нет. Мероприятие отменили в последний момент»", comment: "Услуга не была оказана", item: "Впечатления",
+    options: [ { class: "Впечатления (покупатели)", now: "Услуга не состоялась" }, { class: "Впечатления (покупатели)", now: "Претензия к качеству" }, { class: "Впечатления (покупатели)", now: "Отмена заказа" }, { class: "Впечатления (покупатели)", now: "Не пришел код / билет" } ],
+    correct: 0, explanation: "Мероприятие не состоялось — «Услуга не состоялась»." },
+  { scenario: "Поставщик пишет: «Не могу активировать профиль на платформе Впечатлений»", comment: "Поставщик не может активировать профиль", item: "Впечатления (поставщики)",
+    options: [ { class: "Впечатления (поставщики)", now: "Активация продавца" }, { class: "Впечатления (поставщики)", now: "Добавление услуги" }, { class: "Впечатления (поставщики)", now: "ЛК поставщика: вопрос" }, { class: "Впечатления (поставщики)", now: "Условия сотрудничества" } ],
+    correct: 0, explanation: "Активация профиля — «Активация продавца»." },
+  { scenario: "Поставщик пишет: «Услуга не прошла модерацию, не понимаю почему»", comment: "Услуга не прошла модерацию", item: "Впечатления (поставщики)",
+    options: [ { class: "Впечатления (поставщики)", now: "Модерация" }, { class: "Впечатления (поставщики)", now: "Добавление услуги" }, { class: "Впечатления (поставщики)", now: "ЛК поставщика: ошибка" }, { class: "Впечатления (поставщики)", now: "Календарь / слоты" } ],
+    correct: 0, explanation: "Модерация — «Модерация»." },
+  { scenario: "Поставщик пишет: «Не могу вывести деньги из личного кабинета Впечатлений»", comment: "Вопрос по работе личного кабинета", item: "Впечатления (поставщики)",
+    options: [ { class: "Впечатления (поставщики)", now: "ЛК поставщика: вопрос" }, { class: "Впечатления (поставщики)", now: "ЛК поставщика: ошибка" }, { class: "Впечатления (поставщики)", now: "Условия сотрудничества" }, { class: "Впечатления (поставщики)", now: "Коммуникация с клиентом" } ],
+    correct: 0, explanation: "Вопрос по ЛК — «ЛК поставщика: вопрос»." },
+  { scenario: "Клиент пишет: «Мне не пришло письмо с офертой по туру»", comment: "Клиент не получил документы по туру", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Запрос документов/ Документы не пришли" }, { class: "ТУРЫ", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "ТУРЫ", now: "Статус тура" }, { class: "ТУРЫ", now: "Отмена/Возврат" } ],
+    correct: 0, explanation: "Клиент не получил документы — «Запрос документов/ Документы не пришли»." },
+  { scenario: "Клиент пишет: «В личном кабинете не вижу статус тура — вообще пусто»", comment: "Клиент не видит статус тура в ЛК", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Личный кабинет: заказ/статус не отображается" }, { class: "ТУРЫ", now: "Статус тура" }, { class: "ТУРЫ", now: "Техническая ошибка: отображение / функционал" }, { class: "ТУРЫ", now: "Запрос документов/ Документы не пришли" } ],
+    correct: 0, explanation: "Клиент не видит статус — «Личный кабинет: заказ/статус не отображается»." },
+  { scenario: "Клиент звонит с отдыха: «Нам не привезли трансфер из аэропорта, а гид не отвечает»", comment: "Проблема с трансфером и гидом во время отдыха", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Жалоба на сервис на отдыхе" }, { class: "ТУРЫ", now: "Претензия к качеству номера/отеля (несоответствие)" }, { class: "ТУРЫ", now: "Отказ в заселении" }, { class: "ТУРЫ", now: "Претензия: запрос дополнительной компенсации" } ],
+    correct: 0, explanation: "Проблемы с трансфером — «Жалоба на сервис на отдыхе»." },
+  { scenario: "Клиент пишет: «Хочу добавить в тур ребёнка, которого сейчас нет в заявке»", comment: "Клиент хочет добавить туриста в заявку", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Изменение персональных данных" }, { class: "ТУРЫ", now: "Изменение дат" }, { class: "ТУРЫ", now: "Изменение отеля" }, { class: "ТУРЫ", now: "Изменение класса / категории номера" } ],
+    correct: 0, explanation: "Добавление туриста — «Изменение персональных данных»." },
+  { scenario: "Клиент пишет: «Хочу перенести тур на неделю позже»", comment: "Клиент хочет перенести даты тура", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Изменение дат" }, { class: "ТУРЫ", now: "Изменение отеля" }, { class: "ТУРЫ", now: "Отмена/Возврат" }, { class: "ТУРЫ", now: "Что входит в стоимость" } ],
+    correct: 0, explanation: "Перенос дат — «Изменение дат»." },
+  { scenario: "Клиент пишет: «Туроператор предложил нам другой отель. Мы не согласны, хотим подобрать замену»", comment: "Туроператор предложил замену отеля", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Изменение отеля" }, { class: "ТУРЫ", now: "Статус тура" }, { class: "ТУРЫ", now: "Отмена/Возврат" }, { class: "ТУРЫ", now: "Претензия к качеству номера/отеля (несоответствие)" } ],
+    correct: 0, explanation: "Замена отеля — «Изменение отеля»." },
+  { scenario: "Клиент пишет: «Хочу улучшить номер в отеле или сменить питание с завтрака на всё включено»", comment: "Клиент хочет улучшить категорию номера", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Изменение класса / категории номера" }, { class: "ТУРЫ", now: "Изменение отеля" }, { class: "ТУРЫ", now: "Что входит в стоимость" }, { class: "ТУРЫ", now: "Изменение дат" } ],
+    correct: 0, explanation: "Улучшение номера — «Изменение класса / категории номера»." },
+  { scenario: "Клиент пишет: «Что входит в стоимость тура — трансфер и страховка включены?»", comment: "Клиент уточняет состав тура", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Что входит в стоимость" }, { class: "ТУРЫ", now: "Консультация до покупки" }, { class: "ТУРЫ", now: "Изменение отеля" }, { class: "ТУРЫ", now: "Запрос документов/ Документы не пришли" } ],
+    correct: 0, explanation: "Состав тура — «Что входит в стоимость»." },
+  { scenario: "Клиент пишет: «Только выбираю отель, подскажите, как забронировать?»", comment: "Клиент ещё не бронировал, общие вопросы", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Консультация до покупки" }, { class: "ОТЕЛИ", now: "Что входит в стоимость" }, { class: "ОТЕЛИ", now: "Доп. услуги" }, { class: "ОТЕЛИ", now: "Вопросы по заказу: категория номера, тип питания и т.д." } ],
+    correct: 0, explanation: "Общие вопросы — «Консультация до покупки»." },
+  { scenario: "Клиент пишет: «Хочу перенести бронь отеля на другие даты»", comment: "Клиент хочет изменить даты заезда/выезда", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Изменение дат" }, { class: "ОТЕЛИ", now: "Изменение класса / категории номера" }, { class: "ОТЕЛИ", now: "Отмена/Возврат" }, { class: "ОТЕЛИ", now: "Изменение персональных данных" } ],
+    correct: 0, explanation: "Перенос дат — «Изменение дат»." },
+  { scenario: "Клиент пишет: «Хочу поменять категорию номера в отеле на более высокую»", comment: "Клиент хочет сменить категорию номера", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Изменение класса / категории номера" }, { class: "ОТЕЛИ", now: "Изменение дат" }, { class: "ОТЕЛИ", now: "Доп. услуги" }, { class: "ОТЕЛИ", now: "Изменение персональных данных" } ],
+    correct: 0, explanation: "Смена категории — «Изменение класса / категории номера»." },
+  { scenario: "Клиент пишет: «Уточните, есть ли в отеле паркинг и можно ли заселиться с животными»", comment: "Клиент уточняет дополнительные услуги отеля", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Доп. услуги" }, { class: "ОТЕЛИ", now: "Что входит в стоимость" }, { class: "ОТЕЛИ", now: "Вопросы по заказу: категория номера, тип питания и т.д." }, { class: "ОТЕЛИ", now: "Консультация до покупки" } ],
+    correct: 0, explanation: "Доп. услуги — «Доп. услуги»." },
+  { scenario: "Владелец отеля пишет: «Хочу разместить свой отель на WB Travel. Что для этого нужно?»", comment: "Вопрос от владельца отеля по подключению", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Сотрудничество" }, { class: "ОТЕЛИ", now: "Консультация до покупки" }, { class: "Другое", now: "Общий вопрос WB" }, { class: "Другое", now: "Обратная связь: идея по улучшению" } ],
+    correct: 0, explanation: "Вопрос от владельца отеля — «Сотрудничество»." },
+  { scenario: "Клиент пишет: «Купил страховку вместе с билетом, теперь хочу её вернуть»", comment: "Клиент хочет вернуть страховку", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Страховка: покупка / возврат / компенсация" }, { class: "АВИА", now: "Возврат билета" }, { class: "АВИА", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "АВИА", now: "Доп. услуга: багаж" } ],
+    correct: 0, explanation: "Возврат страховки — «Страховка: покупка / возврат / компенсация»." },
+  { scenario: "Клиент пишет: «Хочу докупить багаж на рейс»", comment: "Клиент хочет добавить багаж", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Доп. услуга: багаж" }, { class: "АВИА", now: "Доп. услуга: питание" }, { class: "АВИА", now: "Доп. услуга: место" }, { class: "АВИА", now: "Покупка билета" } ],
+    correct: 0, explanation: "Добавление багажа — «Доп. услуга: багаж»." },
+  { scenario: "Клиент пишет: «Хочу выбрать конкретное место в самолёте»", comment: "Клиент хочет выбрать место в салоне", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Доп. услуга: место" }, { class: "АВИА", now: "Доп. услуга: багаж" }, { class: "АВИА", now: "Вопросы по заказу: регистрация/посадочный талон" }, { class: "АВИА", now: "Покупка билета" } ],
+    correct: 0, explanation: "Выбор места — «Доп. услуга: место»." },
+  { scenario: "Клиент пишет: «Как мне пройти онлайн-регистрацию на рейс?»", comment: "Клиент уточняет, как зарегистрироваться", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Вопросы по заказу: регистрация/посадочный талон" }, { class: "АВИА", now: "Вопросы по заказу: информация о рейсе" }, { class: "АВИА", now: "Вопросы по заказу: прочее" }, { class: "АВИА", now: "Доп. услуга: место" } ],
+    correct: 0, explanation: "Регистрация — «Вопросы по заказу: регистрация/посадочный талон»." },
+  { scenario: "Клиент пишет: «Не вижу маршрутную квитанцию на почте»", comment: "Клиент не получил МК", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Документы: чек, маршрутная квитанция, справка" }, { class: "АВИА", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "АВИА", now: "Личный кабинет: заказ не отображается" }, { class: "АВИА", now: "Вопросы по заказу: информация о рейсе" } ],
+    correct: 0, explanation: "Клиент просит МК — «Документы: чек, маршрутная квитанция, справка»." },
+  { scenario: "Клиент пишет: «Не получается найти рейс — сайт выдаёт ошибку на этапе поиска»", comment: "Ошибка при поиске рейсов", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Техническая ошибка: отображение / функционал" }, { class: "АВИА", now: "Техническая ошибка: оплата" }, { class: "АВИА", now: "Личный кабинет: заказ не отображается" }, { class: "АВИА", now: "Покупка билета" } ],
+    correct: 0, explanation: "Ошибка при поиске — «Техническая ошибка: отображение / функционал»." },
+  { scenario: "Клиент пишет: «Не списываются деньги при оплате билета»", comment: "Ошибка при оплате авиабилета", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Техническая ошибка: оплата" }, { class: "АВИА", now: "Техническая ошибка: отображение / функционал" }, { class: "АВИА", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "АВИА", now: "Покупка билета" } ],
+    correct: 0, explanation: "Ошибка оплаты — «Техническая ошибка: оплата»." },
+  { scenario: "Клиент пишет: «Рейс отменили. Хочу вернуть деньги и получить компенсацию за испорченный отпуск»", comment: "Клиент требует дополнительную компенсацию", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Претензия: запрос дополнительной компенсации" }, { class: "АВИА", now: "Возврат билета" }, { class: "АВИА", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "АВИА", now: "Обмен билета" } ],
+    correct: 0, explanation: "Запрос компенсации — «Претензия: запрос дополнительной компенсации»." },
+  { scenario: "Клиент пишет: «Не пришёл чек об оплате отеля»", comment: "Клиент запрашивает документ по брони", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Вопросы по заказу: документы" }, { class: "ОТЕЛИ", now: "Вопросы по заказу: категория номера, тип питания и т.д." }, { class: "ОТЕЛИ", now: "Техническая ошибка: отображение / функционал" }, { class: "ОТЕЛИ", now: "Личный кабинет: заказ не отображается" } ],
+    correct: 0, explanation: "Запрос документа — «Вопросы по заказу: документы»." },
+  { scenario: "Клиент пишет: «Не могу забронировать отель — при выборе дат выдаёт ошибку»", comment: "Ошибка при бронировании отеля", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Техническая ошибка: отображение / функционал" }, { class: "ОТЕЛИ", now: "Техническая ошибка: оплата" }, { class: "ОТЕЛИ", now: "Консультация до покупки" }, { class: "ОТЕЛИ", now: "Личный кабинет: заказ не отображается" } ],
+    correct: 0, explanation: "Ошибка брони — «Техническая ошибка: отображение / функционал»." },
+  { scenario: "Клиент пишет: «Хочу отменить бронь отеля. Как вернуть деньги?»", comment: "Клиент хочет отменить бронь", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Отмена/Возврат" }, { class: "ОТЕЛИ", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "ОТЕЛИ", now: "Изменение дат" }, { class: "ОТЕЛИ", now: "Претензия к качеству номера/отеля (несоответствие)" } ],
+    correct: 0, explanation: "Отмена — «Отмена/Возврат»." },
+  { scenario: "Клиент пишет: «Отель не соответствует фото — грязно, шумно»", comment: "Клиент жалуется на несоответствие", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Претензия к качеству номера/отеля (несоответствие)" }, { class: "ОТЕЛИ", now: "Жалоба на сервис на отдыхе" }, { class: "ОТЕЛИ", now: "Претензия: запрос дополнительной компенсации" }, { class: "ОТЕЛИ", now: "Отказ в заселении" } ],
+    correct: 0, explanation: "Несоответствие — «Претензия к качеству номера/отеля (несоответствие)»." },
+  { scenario: "Клиент пишет: «Плохое обслуживание на ресепшене, персонал грубит»", comment: "Клиент жалуется на персонал", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Жалоба на сервис на отдыхе" }, { class: "ОТЕЛИ", now: "Претензия к качеству номера/отеля (несоответствие)" }, { class: "ОТЕЛИ", now: "Претензия: запрос дополнительной компенсации" }, { class: "ОТЕЛИ", now: "Отказ в заселении" } ],
+    correct: 0, explanation: "Проблемы с персоналом — «Жалоба на сервис на отдыхе»." },
+  { scenario: "Клиент пишет: «Не вижу бронь отеля в личном кабинете»", comment: "Клиент не видит бронь", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Личный кабинет: заказ не отображается" }, { class: "ОТЕЛИ", now: "Техническая ошибка: отображение / функционал" }, { class: "ОТЕЛИ", now: "Вопросы по заказу: документы" }, { class: "ОТЕЛИ", now: "Вопросы по заказу: категория номера, тип питания и т.д." } ],
+    correct: 0, explanation: "Заказ не отображается — «Личный кабинет: заказ не отображается»." },
+  { scenario: "Клиент пишет: «При оплате отеля картой выдаёт ошибку»", comment: "Ошибка при оплате отеля", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Техническая ошибка: оплата" }, { class: "ОТЕЛИ", now: "Техническая ошибка: отображение / функционал" }, { class: "ОТЕЛИ", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "ОТЕЛИ", now: "Личный кабинет: заказ не отображается" } ],
+    correct: 0, explanation: "Ошибка оплаты — «Техническая ошибка: оплата»." },
+  { scenario: "Клиент пишет: «Тур не отображается в ЛК, при бронировании была ошибка»", comment: "Ошибка при бронировании тура", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Техническая ошибка: отображение / функционал" }, { class: "ТУРЫ", now: "Личный кабинет: заказ/статус не отображается" }, { class: "ТУРЫ", now: "Техническая ошибка: оплата" }, { class: "ТУРЫ", now: "Статус тура" } ],
+    correct: 0, explanation: "Ошибка брони — «Техническая ошибка: отображение / функционал»." },
+  { scenario: "Клиент пишет: «Помогите подобрать тур, я не хочу искать самостоятельно»", comment: "Клиент просит подбор тура", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Подбор тура" }, { class: "ТУРЫ", now: "Консультация до покупки" }, { class: "ТУРЫ", now: "Что входит в стоимость" }, { class: "ТУРЫ", now: "Статус тура" } ],
+    correct: 0, explanation: "Подбор тура — «Подбор тура»." },
+  { scenario: "Клиент пишет: «Хочу оформить тур в рассрочку. Какой банк выдаёт кредит?»", comment: "Клиент уточняет условия рассрочки", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Кредит/Рассрочка: консультация" }, { class: "ТУРЫ", now: "Кредит/Рассрочка: претензия" }, { class: "Акции/Скидки", now: "Консультация" }, { class: "ТУРЫ", now: "Консультация до покупки" } ],
+    correct: 0, explanation: "Консультация по рассрочке — «Кредит/Рассрочка: консультация»." },
+  { scenario: "Клиент пишет: «При оформлении рассрочки на тур произошла ошибка»", comment: "Проблема с оформлением рассрочки", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Кредит/Рассрочка: претензия" }, { class: "ТУРЫ", now: "Кредит/Рассрочка: консультация" }, { class: "ТУРЫ", now: "Техническая ошибка: оплата" }, { class: "ТУРЫ", now: "Техническая ошибка: отображение / функционал" } ],
+    correct: 0, explanation: "Проблема с рассрочкой — «Кредит/Рассрочка: претензия»." },
+  { scenario: "Сотрудник WB спрашивает, как оформить рассрочку для сотрудников при покупке авиабилета", comment: "Сотрудник уточняет условия рассрочки", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Кредит/Рассрочка: консультация" }, { class: "АВИА", now: "Кредит/Рассрочка: претензия" }, { class: "Акции/Скидки", now: "Консультация" }, { class: "АВИА", now: "Покупка билета" } ],
+    correct: 0, explanation: "Рассрочка для сотрудников — «Кредит/Рассрочка: консультация»." },
+  { scenario: "Клиент пишет: «Не могу посмотреть график платежей по рассрочке»", comment: "Проблема с отображением графика платежей", item: "Авиабилеты",
+    options: [ { class: "АВИА", now: "Кредит/Рассрочка: претензия" }, { class: "АВИА", now: "Кредит/Рассрочка: консультация" }, { class: "АВИА", now: "Техническая ошибка: оплата" }, { class: "Акции/Скидки", now: "Проблема/претензия" } ],
+    correct: 0, explanation: "Проблема с рассрочкой — «Кредит/Рассрочка: претензия». По графику платежей — в HR." },
+  { scenario: "Клиент пишет: «Не пришли Ягодки за тур, уже неделя прошла»", comment: "Кэшбэк Ягодки не начислен", item: "Туры",
+    options: [ { class: "Акции/Скидки", now: "Кэшбэк Ягодки: не начислен" }, { class: "Акции/Скидки", now: "Кэшбэк Ягодки: консультация" }, { class: "Акции/Скидки", now: "Проблема/претензия" }, { class: "Акции/Скидки", now: "Консультация" } ],
+    correct: 0, explanation: "Баллы не пришли — «Кэшбэк Ягодки: не начислен»." },
+  { scenario: "Клиент пишет: «Сколько Ягодок начислится за покупку отеля?»", comment: "Клиент уточняет правила начисления Ягодок", item: "Отели",
+    options: [ { class: "Акции/Скидки", now: "Кэшбэк Ягодки: консультация" }, { class: "Акции/Скидки", now: "Кэшбэк Ягодки: не начислен" }, { class: "Акции/Скидки", now: "Консультация" }, { class: "Акции/Скидки", now: "Проблема/претензия" } ],
+    correct: 0, explanation: "Правила начисления — «Кэшбэк Ягодки: консультация»." },
+  { scenario: "Клиент пишет: «Не могу применить промокод — выдаёт ошибку»", comment: "Проблема с применением промокода", item: "Авиабилеты",
+    options: [ { class: "Акции/Скидки", now: "Проблема/претензия" }, { class: "Акции/Скидки", now: "Консультация" }, { class: "Акции/Скидки", now: "Кэшбэк Ягодки: не начислен" }, { class: "АВИА", now: "Техническая ошибка: оплата" } ],
+    correct: 0, explanation: "Сложности с промокодом — «Проблема/претензия»." },
+  { scenario: "Клиент пишет: «Подскажите, какие сейчас действуют скидки на туры?»", comment: "Клиент уточняет действующие скидки", item: "Туры",
+    options: [ { class: "Акции/Скидки", now: "Консультация" }, { class: "Акции/Скидки", now: "Проблема/претензия" }, { class: "Акции/Скидки", now: "Кэшбэк Ягодки: консультация" }, { class: "ТУРЫ", now: "Что входит в стоимость" } ],
+    correct: 0, explanation: "Вопрос про скидки — «Консультация»." },
+  { scenario: "Клиент пишет: «Хочу задать вопрос про WB Кошелек и рассрочку на товары»", comment: "Вопрос по товарам WB", item: "Другое",
+    options: [ { class: "Другое", now: "Вопрос по товарам WB" }, { class: "Другое", now: "Общий вопрос WB" }, { class: "Акции/Скидки", now: "Консультация" }, { class: "Другое", now: "Обратная связь: идея по улучшению" } ],
+    correct: 0, explanation: "Вопрос по товарам — «Вопрос по товарам WB»." },
+  { scenario: "Клиент пишет: «Очень недоволен работой оператора Ивана, он мне нагрубил»", comment: "Клиент хочет зафиксировать жалобу", item: "Другое",
+    options: [ { class: "Другое", now: "Обратная связь: жалоба на сотрудника" }, { class: "Другое", now: "Обратная связь: благодарность сотруднику" }, { class: "Другое", now: "Обратная связь: идея по улучшению" }, { class: "Другое", now: "Жалоба на пуши" } ],
+    correct: 0, explanation: "Жалоба на сотрудника — «Обратная связь: жалоба на сотрудника»." },
+  { scenario: "Клиент пишет: «Предлагаю добавить в приложение функцию отслеживания рейсов»", comment: "Клиент предлагает улучшение продукта", item: "Другое",
+    options: [ { class: "Другое", now: "Обратная связь: идея по улучшению" }, { class: "Другое", now: "Обратная связь: жалоба на сотрудника" }, { class: "Другое", now: "Обратная связь: благодарность сотруднику" }, { class: "Другое", now: "Общий вопрос WB" } ],
+    correct: 0, explanation: "Идея по улучшению — «Обратная связь: идея по улучшению»." },
+  { scenario: "Клиент пишет: «Разговор с оператором прервался, никто не перезвонил»", comment: "Разговор прервался", item: "Другое",
+    options: [ { class: "Другое", now: "Звонок сорвался/Клиент перестал отвечать" }, { class: "Другое", now: "Обратная связь: жалоба на сотрудника" }, { class: "Другое", now: "Спам / пустое сообщение" }, { class: "Другое", now: "Общий вопрос WB" } ],
+    correct: 0, explanation: "Разговор прервался — «Звонок сорвался/Клиент перестал отвечать»." },
+  { scenario: "Клиент пишет: «Как устроиться к вам на работу?»", comment: "Клиент спрашивает о вакансиях", item: "Другое",
+    options: [ { class: "Другое", now: "Трудоустройство" }, { class: "Другое", now: "Общий вопрос WB" }, { class: "Другое", now: "Обратная связь: идея по улучшению" }, { class: "Другое", now: "Вопрос по товарам WB" } ],
+    correct: 0, explanation: "Вопрос о вакансиях — «Трудоустройство»." },
+  { scenario: "Клиент пишет: «Где находится ваш офис в Москве?»", comment: "Общий вопрос про WB, не по Тревел", item: "Другое",
+    options: [ { class: "Другое", now: "Общий вопрос WB" }, { class: "Другое", now: "Вопрос по товарам WB" }, { class: "Другое", now: "Трудоустройство" }, { class: "Другое", now: "Обратная связь: идея по улучшению" } ],
+    correct: 0, explanation: "Вопрос про WB — «Общий вопрос WB»." },
+  { scenario: "Клиент пишет: «Хотел купить билет на автобус, но не нашёл такой возможности на сайте»", comment: "Клиент интересуется покупкой автобусных билетов", item: "Транспорт",
+    options: [ { class: "Транспорт", now: "Автобус: покупка билета" }, { class: "Транспорт", now: "ЖД билет: покупка" }, { class: "Транспорт", now: "Техническая ошибка: отображение / функционал" }, { class: "Транспорт", now: "РЖД бонус: консультация" } ],
+    correct: 0, explanation: "Вопрос про автобусные билеты — «Автобус: покупка билета»." },
+  { scenario: "Поставщик пишет: «Слоты в календаре отображаются неверно»", comment: "Проблема с календарём и слотами", item: "Впечатления (поставщики)",
+    options: [ { class: "Впечатления (поставщики)", now: "Календарь / слоты" }, { class: "Впечатления (поставщики)", now: "ЛК поставщика: ошибка" }, { class: "Впечатления (поставщики)", now: "Модерация" }, { class: "Впечатления (поставщики)", now: "Добавление услуги" } ],
+    correct: 0, explanation: "Проблемы с расписанием — «Календарь / слоты»." },
+  { scenario: "Поставщик пишет: «Хочу добавить новую услугу на платформу»", comment: "Поставщик хочет добавить услугу", item: "Впечатления (поставщики)",
+    options: [ { class: "Впечатления (поставщики)", now: "Добавление услуги" }, { class: "Впечатления (поставщики)", now: "Модерация" }, { class: "Впечатления (поставщики)", now: "Календарь / слоты" }, { class: "Впечатления (поставщики)", now: "Условия сотрудничества" } ],
+    correct: 0, explanation: "Добавление услуги — «Добавление услуги»." },
+  { scenario: "Поставщик пишет: «Клиент не отвечает в чате, не могу с ним связаться»", comment: "Поставщик не может связаться с клиентом", item: "Впечатления (поставщики)",
+    options: [ { class: "Впечатления (поставщики)", now: "Коммуникация с клиентом" }, { class: "Впечатления (поставщики)", now: "ЛК поставщика: вопрос" }, { class: "Впечатления (поставщики)", now: "Модерация" }, { class: "Впечатления (поставщики)", now: "Условия сотрудничества" } ],
+    correct: 0, explanation: "Проблема с коммуникацией — «Коммуникация с клиентом»." },
+  { scenario: "Поставщик пишет: «Какая у вас комиссия и как подписать договор?»", comment: "Поставщик уточняет условия сотрудничества", item: "Впечатления (поставщики)",
+    options: [ { class: "Впечатления (поставщики)", now: "Условия сотрудничества" }, { class: "Впечатления (поставщики)", now: "ЛК поставщика: вопрос" }, { class: "Впечатления (поставщики)", now: "Добавление услуги" }, { class: "Впечатления (поставщики)", now: "Модерация" } ],
+    correct: 0, explanation: "Условия сотрудничества — «Условия сотрудничества»." },
+  { scenario: "Клиент пишет: «Заказ отеля не отображается в ЛК, но деньги списались»", comment: "Заказ не виден в ЛК", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Личный кабинет: заказ не отображается" }, { class: "ОТЕЛИ", now: "Вопросы по заказу: документы" }, { class: "ОТЕЛИ", now: "Техническая ошибка: оплата" }, { class: "ОТЕЛИ", now: "Отмена/Возврат" } ],
+    correct: 0, explanation: "Заказ не виден — «Личный кабинет: заказ не отображается»." },
+  { scenario: "Клиент пишет: «При оплате тура через WB Кошелек произошла ошибка»", comment: "Ошибка при оплате тура", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Техническая ошибка: оплата" }, { class: "ТУРЫ", now: "Техническая ошибка: отображение / функционал" }, { class: "ТУРЫ", now: "Личный кабинет: заказ/статус не отображается" }, { class: "ТУРЫ", now: "Возврат денег: условия возврата, уточнение сроков" } ],
+    correct: 0, explanation: "Ошибка оплаты — «Техническая ошибка: оплата»." },
+  { scenario: "Клиент пишет: «Прошло 10 дней после отмены тура, а деньги так и не вернулись»", comment: "Срок возврата денег истёк", item: "Туры",
+    options: [ { class: "ТУРЫ", now: "Возврат денег: срок истёк" }, { class: "ТУРЫ", now: "Возврат денег: условия возврата, уточнение сроков" }, { class: "ТУРЫ", now: "Отмена/Возврат" }, { class: "ТУРЫ", now: "Личный кабинет: заказ/статус не отображается" } ],
+    correct: 0, explanation: "Срок истёк — «Возврат денег: срок истёк»." },
+  { scenario: "Клиент пишет: «Как купить билет на поезд через WB Travel? Какие есть места?»", comment: "Клиент уточняет, как купить ЖД билет", item: "Транспорт",
+    options: [ { class: "Транспорт", now: "ЖД билет: покупка" }, { class: "Транспорт", now: "ЖД билет: возврат" }, { class: "Транспорт", now: "РЖД бонус: консультация" }, { class: "Транспорт", now: "Консультация по изменению персональных данных" } ],
+    correct: 0, explanation: "Покупка ЖД — «ЖД билет: покупка»." },
+  { scenario: "Клиент пишет: «Хочу вернуть билет на поезд»", comment: "Клиент хочет вернуть ЖД билет", item: "Транспорт",
+    options: [ { class: "Транспорт", now: "ЖД билет: возврат" }, { class: "Транспорт", now: "ЖД билет: покупка" }, { class: "Транспорт", now: "Консультация по изменению персональных данных" }, { class: "Транспорт", now: "РЖД бонус: консультация" } ],
+    correct: 0, explanation: "Возврат ЖД — «ЖД билет: возврат»." },
+  { scenario: "Клиент пишет: «Не прошла оплата ЖД билета»", comment: "Ошибка при оплате ЖД", item: "Транспорт",
+    options: [ { class: "Транспорт", now: "Техническая ошибка: оплата" }, { class: "Транспорт", now: "Техническая ошибка: отображение / функционал" }, { class: "Транспорт", now: "ЖД билет: покупка" }, { class: "Транспорт", now: "Личный кабинет: заказ не отображается" } ],
+    correct: 0, explanation: "Ошибка оплаты — «Техническая ошибка: оплата»." },
+  { scenario: "Клиент пишет: «Не могу найти рейс на поезд — выдаёт ошибку при поиске»", comment: "Ошибка при поиске ЖД рейса", item: "Транспорт",
+    options: [ { class: "Транспорт", now: "Техническая ошибка: отображение / функционал" }, { class: "Транспорт", now: "Техническая ошибка: оплата" }, { class: "Транспорт", now: "ЖД билет: покупка" }, { class: "Транспорт", now: "РЖД бонус: консультация" } ],
+    correct: 0, explanation: "Ошибка при поиске — «Техническая ошибка: отображение / функционал»." },
+  { scenario: "Клиент пишет: «Не могу найти ваучер на отель в личном кабинете»", comment: "Клиент ищет документ", item: "Отели",
+    options: [ { class: "ОТЕЛИ", now: "Вопросы по заказу: документы" }, { class: "ОТЕЛИ", now: "Вопросы по заказу: категория номера, тип питания и т.д." }, { class: "ОТЕЛИ", now: "Личный кабинет: заказ не отображается" }, { class: "ОТЕЛИ", now: "Техническая ошибка: отображение / функционал" } ],
+    correct: 0, explanation: "Клиент ищет документ — «Вопросы по заказу: документы»." }
+];
+
+function buildSession() {
+  const pool = shuffle(QUESTION_BANK).slice(0, Math.min(QUESTIONS_PER_SESSION, QUESTION_BANK.length));
+  return pool.map(q => {
+    const correctObj = q.options[q.correct];
+    const shuffled = shuffle(q.options);
+    const newCorrect = shuffled.findIndex(o => o.class === correctObj.class && o.now === correctObj.now);
+    return { ...q, options: shuffled, correct: newCorrect };
+  });
+}
+
+function updateStats() {
+  progressText.textContent = `${currentCase} / ${sessionCases.length}`;
+  const pct = sessionCases.length ? (currentCase / sessionCases.length) * 100 : 0;
+  progressBar.style.width = pct + '%';
+  statCorrect.textContent = correctCount;
+  statWrong.textContent = wrongCount;
+  const total = correctCount + wrongCount;
+  statAccuracy.textContent = total ? Math.round((correctCount / total) * 100) + '%' : '—';
+}
+
+function renderCase() {
+  answered = false;
+  if (currentCase >= sessionCases.length) {
+    const total = correctCount + wrongCount;
+    const acc = total ? Math.round((correctCount / total) * 100) : 0;
+    let verdict, color;
+    if (acc >= 90) { verdict = "Отличный результат! Вы готовы к работе."; color = "var(--wb-success)"; }
+    else if (acc >= 70) { verdict = "Хороший результат. Стоит повторить сложные темы."; color = "var(--wb-warning)"; }
+    else { verdict = "Нужно еще потренироваться. Вернитесь в Справочник тематик."; color = "var(--wb-error)"; }
+    caseContainer.innerHTML = `
+      <div class="case-card" style="text-align:center; padding:48px 28px;">
+        <div style="font-size:64px; margin-bottom:16px;">🏁</div>
+        <h2 style="font-size:28px; margin-bottom:12px;">Тренажёр завершён!</h2>
+        <div style="font-size:20px; margin-bottom:8px;">Правильно: <strong style="color:var(--wb-success);">${correctCount}</strong> из ${sessionCases.length}</div>
+        <div style="font-size:18px; color:${color}; font-weight:600; margin-bottom:24px;">${verdict}</div>
+        <button class="btn-primary" onclick="resetTrainer()">Новая попытка (другие вопросы)</button>
+      </div>
+    `;
+    updateStats();
+    return;
+  }
+
+  const c = sessionCases[currentCase];
+  caseContainer.innerHTML = `
+    <div class="case-card">
+      <div class="case-scenario">
+        <div class="label">Кейс ${currentCase + 1} из ${sessionCases.length} · ${c.item}</div>
+        <div class="text">${c.scenario}</div>
+        <div class="comment">💬 ${c.comment}</div>
+      </div>
+      <div class="case-question">Какую тематику выбрать?</div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="btn-primary" id="nextBtn" style="display:none;" onclick="nextCase()">Следующий кейс →</button>
+    </div>
+  `;
+
+  const optionsEl = document.getElementById('options');
+  c.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-class">${escapeHtml(opt.class)}</span>${escapeHtml(opt.now)}`;
+    btn.onclick = () => selectAnswer(i);
+    optionsEl.appendChild(btn);
+  });
+
+  updateStats();
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const c = sessionCases[currentCase];
+  const buttons = document.querySelectorAll('#options .option-btn');
+  const feedback = document.getElementById('feedback');
+  const isCorrect = idx === c.correct;
+
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === c.correct) btn.classList.add('reveal-correct');
+    if (i === idx && !isCorrect) btn.classList.add('wrong');
+    if (i === idx && isCorrect) btn.classList.add('correct');
+  });
+
+  const correctFull = `${c.options[c.correct].class} → ${c.options[c.correct].now}`;
+  if (isCorrect) {
+    correctCount++;
+    feedback.className = 'feedback success show';
+    feedback.innerHTML = `<div class="title">✅ Правильно!</div><div>${c.explanation}</div>`;
+  } else {
+    wrongCount++;
+    feedback.className = 'feedback error show';
+    feedback.innerHTML = `<div class="title">❌ Неверно. Правильный ответ: <strong>${escapeHtml(correctFull)}</strong></div><div>${c.explanation}</div>`;
+  }
+
+  document.getElementById('nextBtn').style.display = 'inline-block';
+  updateStats();
+}
+
+function nextCase() {
+  currentCase++;
+  renderCase();
+}
+
+function resetTrainer() {
+  sessionCases = buildSession();
+  currentCase = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  answered = false;
+  renderCase();
+}
+
+resetTrainer();
+
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  };
+});
+</script>
+</body>
+</html>
